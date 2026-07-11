@@ -1,0 +1,143 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Phase 0 사전 기술 검증",
+        "description": "Upstage API, Document Parse, Solar Embedding, Solar Pro 3 스트리밍, Groundness Check, LangGraph/langchain-upstage 호환성을 구현 전 확인한다.",
+        "details": "UPSTAGE_API_KEY 유효성, Document Parse 요청/응답과 Markdown 표 구조, Embedding 차원 수, Solar Pro 3 OpenAI 호환 스트리밍, Groundness Check 판정 포맷, LangGraph 조건부 라우팅 패턴을 확인하고 확정 버전 조합을 기록한다.",
+        "testStrategy": "샘플 호출 결과와 임포트 테스트 결과를 기록한다. 4개 Upstage API 호출이 성공하고 의존성 버전 조합이 확정되면 완료한다.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "프로젝트 기본 구조와 환경 설정",
+        "description": "백엔드와 프론트엔드 디렉터리, 환경변수 샘플, 의존성 파일, 기본 실행 구조를 구성한다.",
+        "details": "PRD의 `backend/`, `frontend/` 구조를 생성하고 FastAPI, Vite React, TailwindCSS, Axios, 라우팅의 기본 골격을 만든다. `.gitignore`에 `.env`가 포함되어야 하며 `.env.example`에는 키 없이 필요한 변수명만 둔다.",
+        "testStrategy": "`uvicorn backend.main:app --reload`로 `/docs` 접근을 확인하고, `npm run dev`로 프론트 라우팅과 Tailwind 적용을 확인한다.",
+        "priority": "high",
+        "dependencies": [1],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "문서 업로드 및 Document Parse 파이프라인",
+        "description": "PDF, DOCX, HTML 업로드를 받고 Upstage Document Parse로 Markdown 변환과 처리 상태 관리를 구현한다.",
+        "details": "`backend/services/parse_service.py`와 문서 업로드 흐름을 구현한다. 파일 형식과 20MB 제한을 서버 측에서 검증하고, 처리 상태를 `processing`, `indexed`, `failed`로 관리한다. 파싱 실패 시 사용자 친화적 오류 사유를 남긴다.",
+        "testStrategy": "PDF, DOCX, HTML 업로드 성공, 표 포함 PDF의 Markdown 표 구조 보존, 손상 파일과 미지원 형식 오류 처리를 검증한다.",
+        "priority": "high",
+        "dependencies": [2],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "청크 분할, Solar Embedding, 인메모리 벡터 색인",
+        "description": "파싱된 문서를 청크로 분할하고 Solar Embedding으로 벡터화해 FAISS 또는 Chroma 인메모리 스토어에 색인한다.",
+        "details": "`backend/services/embedding_service.py`를 구현한다. Embedding 차원 수와 벡터 스토어 설정을 일치시키고, 문서 메타데이터와 청크 메타데이터를 연결한다. 중복 업로드 정책과 문서 삭제 시 벡터 제거 정책을 반영한다.",
+        "testStrategy": "파싱 완료 후 자동 색인, 동일 문서 중복 처리, 삭제 후 orphan 벡터 없음, 검색 결과 반환을 검증한다.",
+        "priority": "high",
+        "dependencies": [3],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "LangGraph State와 8개 RAG Node 구현",
+        "description": "Self-Correcting RAG를 위한 LangGraph State, Node, Routing 함수를 구현한다.",
+        "details": "`backend/graph/state.py`, `nodes.py`, `graph.py`를 구성한다. State에는 질문, 검색 결과, 답변, 출처, groundness 결과, retryCount를 포함한다. 질문평가, 질문재작성, 문서검색, 검색결과평가, 검색쿼리재작성, 답변생성, 답변평가, 문제진단 Node를 구현한다.",
+        "testStrategy": "각 Node 단위 동작과 조건부 라우팅을 검증한다. 정상 경로와 재시도 경로가 모두 종료 조건에 도달해야 한다.",
+        "priority": "high",
+        "dependencies": [4],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "Solar Pro 3 답변 생성 및 SSE 스트리밍",
+        "description": "검색 청크 기반 프롬프트로 Solar Pro 3 답변을 생성하고 토큰 단위 스트리밍 응답을 제공한다.",
+        "details": "`backend/services/llm_service.py`와 채팅 스트리밍 생성기를 구현한다. 답변은 문서 근거에 기반해야 하며, 참조한 문서명과 페이지 또는 청크 위치를 최종 이벤트에 포함한다.",
+        "testStrategy": "질문 입력 후 첫 토큰 3초 이내 스트리밍 시작, 최종 이벤트의 answer/sources/grounded 포함, 관련 문서가 없을 때 확인 불가 안내를 검증한다.",
+        "priority": "high",
+        "dependencies": [5],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "Groundness Check와 재시도 루프",
+        "description": "답변 생성 후 Groundness Check를 자동 실행하고 근거 부족 시 재검색과 재답변을 수행한다.",
+        "details": "`backend/services/groundness_service.py`를 구현하고 LangGraph 라우팅에 연결한다. `MAX_RETRY_COUNT`를 초과하면 답을 지어내지 않고 확인 불가 응답으로 종료한다.",
+        "testStrategy": "grounded, notGrounded, notSure 케이스를 검증한다. 근거 부족 시 쿼리 재작성-재검색-재답변 흐름이 동작하고 최대 재시도 초과 시 정직하게 종료해야 한다.",
+        "priority": "high",
+        "dependencies": [6],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "FastAPI documents/chat API 조립",
+        "description": "PRD의 REST API 명세에 맞춰 문서 관리와 채팅 API 라우터를 구현한다.",
+        "details": "`POST /api/documents`, `GET /api/documents`, `DELETE /api/documents/{documentId}`, `POST /api/chat`을 구현한다. CORS, 오류 응답, 타임아웃, 입력 검증, SSE `text/event-stream` 응답을 포함한다.",
+        "testStrategy": "`curl` 또는 Swagger로 4개 엔드포인트의 성공/실패 응답을 확인하고 API 명세와 필드가 일치하는지 검증한다.",
+        "priority": "high",
+        "dependencies": [3, 4, 7],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "프론트 공통 레이아웃, 라우팅, API 클라이언트",
+        "description": "React/Vite/Tailwind 기반 프론트 공통 구조와 API 연동 기반을 만든다.",
+        "details": "`/`, `/documents`, `/chat` 라우트를 구성하고 Top Nav, Side Nav 또는 반응형 내비게이션, Axios 인스턴스, 공통 Toast, Modal, StatusBadge, GroundnessLabel, SourceChip 컴포넌트를 구현한다.",
+        "testStrategy": "세 라우트 접근, API Base URL 적용, 공통 컴포넌트 렌더링, 모바일/데스크톱 레이아웃 깨짐 없음을 확인한다.",
+        "priority": "medium",
+        "dependencies": [2],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "문서 관리 화면 구현",
+        "description": "`/documents`에서 드래그앤드롭 업로드, 문서 목록, 상태 표시, 삭제, 실패 재시도를 제공한다.",
+        "details": "DropZone, DocumentTable, StatusBadge, Modal, Toast를 사용한다. 업로드 중/파싱 중/색인 완료/실패 상태를 항목별로 표시하고 삭제 전 확인 절차를 둔다.",
+        "testStrategy": "PDF/DOCX/HTML 업로드, 진행 상태 표시, 색인 완료 목록 표시, 삭제 확인과 삭제 후 목록/벡터 반영, 실패 문서 재시도 버튼을 검증한다.",
+        "priority": "high",
+        "dependencies": [8, 9],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 11,
+        "title": "Q&A 채팅 화면 구현",
+        "description": "`/chat`에서 질문 입력, 답변 스트리밍, 출처 표시, Groundness 라벨, 대화 이력 유지, 중복 전송 차단을 구현한다.",
+        "details": "ChatInput, ChatMessageList, SourceChip, GroundnessLabel, Toast를 사용한다. SSE 스트림을 받아 타이핑되듯 표시하고 최종 이벤트에서 출처와 grounded 상태를 반영한다.",
+        "testStrategy": "질문 전송 후 스트리밍 표시, 답변 하단 출처 표시, 새로고침 전 대화 이력 유지, 생성 중 입력 비활성화, 스트리밍 중단 오류 안내를 검증한다.",
+        "priority": "high",
+        "dependencies": [8, 9],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 12,
+        "title": "대시보드, 통합 E2E 검증, 로컬 실행 문서화",
+        "description": "메인 대시보드 요약 카드와 PRD E2E 시나리오를 검증하고 로컬 실행 절차를 문서화한다.",
+        "details": "`/`에 업로드/색인완료/처리중/실패 요약 카드를 제공한다. E2E-01~08 시나리오를 기준으로 업로드, 질의, 근거 표시, 확인 불가, 삭제, 오류 처리를 검증한다. 로컬 실행과 환경변수 설정 방법을 README에 정리한다.",
+        "testStrategy": "Must E2E 시나리오(E2E-01~04, E2E-07) 전부 통과, 브라우저 콘솔 CORS/미처리 오류 없음, Master Checklist Must Have 전 항목 통과를 확인한다.",
+        "priority": "medium",
+        "dependencies": [10, 11],
+        "status": "pending",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2026-07-07T00:00:00.000Z",
+      "updated": "2026-07-07T00:00:00.000Z",
+      "description": "PRD_RAG_QA앱.md 기반 문서 RAG Q&A 앱 구현 태스크"
+    }
+  }
+}
