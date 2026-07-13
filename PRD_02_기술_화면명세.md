@@ -496,20 +496,20 @@ module.exports = {
 | 구분 | 기술 | 버전 |
 |------|------|------|
 | 백엔드 | Python FastAPI | v0.111+ |
-| 에이전트 오케스트레이션 | LangGraph | v0.2+ |
+| 에이전트 오케스트레이션 | LangGraph | 1.1.6 |
 | LLM 연동 | langchain-upstage | 최신 (Phase 0에서 확정) |
 | 문서 파싱 | Upstage Document Parse | API |
 | 임베딩 | Solar Embedding (한국어 특화) | API |
 | 답변 생성 | Solar Pro 3 | API |
 | 근거 검증 | Upstage Groundness Check | API |
-| 벡터 스토어 | FAISS 또는 Chroma (in-memory) | Phase 0에서 확정 |
+| 벡터 스토어 | FAISS (in-memory) | Phase 0에서 확정 |
 | 프론트엔드 | ReactJS | v18+ |
 | 빌드 도구 | Vite | v5+ |
 | 스타일링 | TailwindCSS | v3+ |
 | HTTP 클라이언트 | Axios | v1+ |
 | 버전 관리 | GitHub | main 브랜치 |
 
-> 정확한 버전 조합은 Phase 0 사전 기술 검증에서 확정하고 `requirements.txt` / `package.json`에 고정(pin)한다 — "조사 먼저, 구현 나중" 원칙.
+> 정확한 버전 조합은 Phase 0 사전 기술 검증에서 확정하고 `backend/requirements.txt` / `package.json`에 고정(pin)한다 — "조사 먼저, 구현 나중" 원칙.
 
 ---
 

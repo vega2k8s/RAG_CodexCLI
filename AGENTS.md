@@ -18,7 +18,10 @@ cd frontend && npm run dev
 uvicorn backend.main:app --reload
 
 # Phase 0 Upstage API 및 의존성 사전 검증
-python scripts/phase0_upstage_check.py
+python backend/scripts/phase0_upstage_check.py
+
+# 백엔드 테스트 실행
+python -m pytest backend/tests
 ```
 
 테스트, 린트, 포맷 명령은 동작 확인 후 문서에 추가합니다.
@@ -44,3 +47,4 @@ python scripts/phase0_upstage_check.py
 * 모든 변경사항이 발생하면 (예를 들어 기능이나 요구사항이 변경 되거나, 화면명세가 변경되거나, Source Code가 변경 되거나 라이브러리 버전이 변경되면) md 문서들도 반드시 업데이트 합니다. 
 * `@PRD_01_기획_기능요구사항.md\3. 기능 요구사항 (Functional Requirements) & DoD` FR-1 ~ FR-7 구현이 완료된 사항들은 모두 체크 표시를 하여 FR 구현이 완료 되었음을 반드시 표시하세요.
 * `@PRD_03_개발프로세스_일정.md\13. 개발 일정 및 완료 기준` 에서도 Phase 별로 구현이 완료되면 체크표시를 해서 완료 되었음을 반드시 표시하세요.
+* `@PRD_03_개발프로세스_일정.md` 문서의 Phase 별로 구현이 완료되면 `@PRD_01_기획_기능요구사항.md\3. 기능 요구사항 (Functional Requirements) & DoD` 이 완료 되었음을 반드시 같이 표시하세요.

@@ -3,6 +3,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from backend.routers.documents import router as documents_router
+
 
 app = FastAPI(
     title="RAG Q&A API",
@@ -23,3 +25,6 @@ app.add_middleware(
 def health_check() -> dict[str, str]:
     """서비스 상태를 확인합니다."""
     return {"status": "ok"}
+
+
+app.include_router(documents_router)

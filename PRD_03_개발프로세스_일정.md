@@ -72,6 +72,8 @@
 
 ## 13. 개발 일정 및 완료 기준 (1일 스프린트)
 
+> Phase 완료 시 해당 Phase의 완료 체크뿐 아니라, 연결된 FR이 있는 경우 `PRD_01_기획_기능요구사항.md`의 **3. 기능 요구사항 (Functional Requirements) & DoD** 항목도 함께 체크한다.
+
 > **전체 개발 타임라인**
 >
 > ```
@@ -102,7 +104,7 @@
 
 **완료 기준**
 - [ ] 4개 Upstage API(Parse/Embedding/Solar/Groundness) 모두 테스트 호출 성공
-- [x] 확정 버전 조합을 `requirements.txt`에 고정
+- [x] 확정 버전 조합을 `backend/requirements.txt`에 고정
 
 **Phase 0 처리 기록 (2026-07-13)**
 - [x] `UPSTAGE_API_KEY` 환경변수 존재 확인 (`.env` 값은 출력하지 않음)
@@ -131,10 +133,31 @@
 - parse_service / embedding_service 구현, 업로드 → 파싱 → 청크 → 색인 자동 연결
 - **완료 기준**: FR-1, FR-2의 DoD 전부 체크
 
+**Phase 2 처리 기록 (2026-07-13)**
+- [x] `backend/services/parse_service.py` 구현: PDF/DOCX/HTML 확장자 검증, Upstage Document Parse 연동, Markdown 추출
+- [x] `backend/services/embedding_service.py` 구현: Markdown 청크 분할, Solar Embedding 연동, FAISS in-memory 색인
+- [x] `backend/services/pipeline.py` 구현: 업로드 → 파싱 → 청크 → 임베딩 → 색인 자동 연결
+- [x] `backend/routers/documents.py` 구현: `POST/GET/DELETE /api/documents`
+- [x] 동일 파일명 중복 업로드는 UUID 기반 서로 다른 문서로 관리
+- [x] 문서 삭제 시 메타데이터와 FAISS 벡터를 함께 제거
+- [x] `PRD_01_기획_기능요구사항.md`의 FR-1, FR-2 사전 조사 및 DoD 체크 완료
+- [x] `python -m pytest backend/tests` 통과 (`7 passed`)
+
 ### Phase 3 — LangGraph RAG 그래프 (2.5h) — FR-3, FR-4, FR-5
 
 - State/8개 Node/Routing 구현, Groundness 재시도 루프 포함
 - **완료 기준**: FR-3~FR-5의 DoD 전부 체크 (정상 경로 + 재시도 경로 테스트)
+
+**Phase 3 처리 기록 (2026-07-13)**
+- [x] `backend/graph/state.py` 구현: 질문, 검색결과, 답변, 평가결과, 재시도 횟수, 출처 필드를 포함한 `RAGState` 정의
+- [x] `backend/graph/nodes.py` 구현: 질문평가, 질문재작성, 문서검색, 검색결과평가, 검색쿼리재작성, 답변생성, 답변평가, 문제진단 8개 Node 구현
+- [x] `backend/graph/graph.py` 구현: LangGraph `StateGraph`, 조건부 Edge, Groundness 실패 시 재시도 루프, 최대 재시도 초과 시 정직한 실패 응답 연결
+- [x] `backend/services/embedding_service.py` 확장: FAISS 질의 임베딩 검색 및 출처 반환용 `SearchResult` 추가
+- [x] `backend/services/llm_service.py` 구현: Solar Pro3 OpenAI 호환 Chat Completions 호출 및 스트리밍 토큰 변환 인터페이스
+- [x] `backend/services/groundness_service.py` 구현: Groundness Check 응답 판정 정규화(`grounded`/`notGrounded`/`notSure`)
+- [x] 정상 경로(1회 통과), Groundness 실패 후 재시도 통과, 검색 결과 없음 경로 테스트 추가
+- [x] `PRD_01_기획_기능요구사항.md`의 FR-3, FR-4, FR-5 DoD 체크 완료
+- [x] `python -m pytest backend/tests` 통과 (`10 passed`)
 
 ### Phase 4 — 백엔드 API 조립 (1.0h)
 

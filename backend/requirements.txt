@@ -6,3 +6,6 @@ langchain-core==1.2.26
 faiss-cpu==1.11.0
 requests==2.33.1
 python-dotenv==1.0.1
+numpy==1.26.4
+python-multipart==0.0.12
+pytest==7.4.4

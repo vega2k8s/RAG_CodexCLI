@@ -126,15 +126,15 @@ PDF·Word·HTML 문서를 업로드하면, AI가 문서 구조(표·레이아웃
 **설명**: PDF·Word·HTML 문서를 업로드하면 Upstage Document Parse API를 통해 표·레이아웃 구조를 보존한 Markdown으로 변환한다.
 
 **🔍 사전 조사 (구현 전 필수 확인)**
-- [ ] Upstage Document Parse API의 요청/응답 스키마 확인 (지원 포맷, 파일 용량 제한)
-- [ ] 비동기 처리 여부 확인 (동기 응답 vs. 작업 큐 + 폴링 방식)
-- [ ] 표/레이아웃이 Markdown으로 어떤 구조로 변환되는지 샘플 응답 확인
+- [x] Upstage Document Parse API의 요청/응답 스키마 확인 (지원 포맷, 파일 용량 제한)
+- [x] 비동기 처리 여부 확인 (동기 응답 vs. 작업 큐 + 폴링 방식)
+- [x] 표/레이아웃이 Markdown으로 어떤 구조로 변환되는지 샘플 응답 확인
 
 **✅ DoD (Definition of Done)**
-- [ ] PDF, Word(.docx), HTML 3개 포맷 모두 업로드 성공
-- [ ] 표가 포함된 문서를 업로드했을 때 표 구조가 깨지지 않고 Markdown으로 변환됨
-- [ ] 파싱 실패 시(손상 파일, 지원하지 않는 포맷 등) 사용자에게 명확한 에러 메시지 표시
-- [ ] 파싱 진행 상태(대기/처리중/완료/실패)가 화면에 실시간 반영됨
+- [x] PDF, Word(.docx), HTML 3개 포맷 모두 업로드 성공
+- [x] 표가 포함된 문서를 업로드했을 때 표 구조가 깨지지 않고 Markdown으로 변환됨
+- [x] 파싱 실패 시(손상 파일, 지원하지 않는 포맷 등) 사용자에게 명확한 에러 메시지 표시
+- [x] 파싱 진행 상태(대기/처리중/완료/실패)가 화면에 실시간 반영됨
 
 ---
 
@@ -143,14 +143,14 @@ PDF·Word·HTML 문서를 업로드하면, AI가 문서 구조(표·레이아웃
 **설명**: 파싱된 문서 청크를 Solar Embedding으로 벡터화하여 인메모리 벡터 스토어에 색인한다.
 
 **🔍 사전 조사**
-- [ ] Solar Embedding API의 입력 토큰 제한 및 청크 분할 권장 사이즈 확인
-- [ ] 한국어 특화 임베딩의 차원(dimension) 수 확인 → 벡터 스토어 설정과 일치 여부 검증
-- [ ] 인메모리 벡터 스토어(예: FAISS, Chroma 등) 선택 시 LangGraph와의 연동 방식 확인
+- [x] Solar Embedding API의 입력 토큰 제한 및 청크 분할 권장 사이즈 확인
+- [x] 한국어 특화 임베딩의 차원(dimension) 수 확인 → 벡터 스토어 설정과 일치 여부 검증
+- [x] 인메모리 벡터 스토어(예: FAISS, Chroma 등) 선택 시 LangGraph와의 연동 방식 확인
 
 **✅ DoD**
-- [ ] 파싱 완료된 문서가 자동으로 청크 분할 → 임베딩 → 색인까지 이어짐 (수동 트리거 불필요)
-- [ ] 동일 문서를 중복 업로드 시 중복 색인되지 않거나, 명확히 구분되어 관리됨
-- [ ] 문서 삭제 시 해당 문서의 벡터도 함께 제거됨 (orphan 벡터 없음)
+- [x] 파싱 완료된 문서가 자동으로 청크 분할 → 임베딩 → 색인까지 이어짐 (수동 트리거 불필요)
+- [x] 동일 문서를 중복 업로드 시 중복 색인되지 않거나, 명확히 구분되어 관리됨
+- [x] 문서 삭제 시 해당 문서의 벡터도 함께 제거됨 (orphan 벡터 없음)
 
 ---
 
@@ -828,14 +828,14 @@ module.exports = {
 | 임베딩 | Solar Embedding (한국어 특화) | API |
 | 답변 생성 | Solar Pro 3 | API |
 | 근거 검증 | Upstage Groundness Check | API |
-| 벡터 스토어 | FAISS 또는 Chroma (in-memory) | Phase 0에서 확정 |
+| 벡터 스토어 | FAISS (in-memory) | Phase 0에서 확정 |
 | 프론트엔드 | ReactJS | v18+ |
 | 빌드 도구 | Vite | v5+ |
 | 스타일링 | TailwindCSS | v3+ |
 | HTTP 클라이언트 | Axios | v1+ |
 | 버전 관리 | GitHub | main 브랜치 |
 
-> 정확한 버전 조합은 Phase 0 사전 기술 검증에서 확정하고 `requirements.txt` / `package.json`에 고정(pin)한다 — "조사 먼저, 구현 나중" 원칙.
+> 정확한 버전 조합은 Phase 0 사전 기술 검증에서 확정하고 `backend/requirements.txt` / `package.json`에 고정(pin)한다 — "조사 먼저, 구현 나중" 원칙.
 
 ---
 
@@ -899,6 +899,8 @@ rag-qa-app/
 
 ## 13. 개발 일정 및 완료 기준 (1일 스프린트)
 
+> Phase 완료 시 해당 Phase의 완료 체크뿐 아니라, 연결된 FR이 있는 경우 `PRD_01_기획_기능요구사항.md`의 **3. 기능 요구사항 (Functional Requirements) & DoD** 항목도 함께 체크한다.
+
 > **전체 개발 타임라인**
 >
 > ```
@@ -929,7 +931,7 @@ rag-qa-app/
 
 **완료 기준**
 - [ ] 4개 Upstage API(Parse/Embedding/Solar/Groundness) 모두 테스트 호출 성공
-- [x] 확정 버전 조합을 `requirements.txt`에 고정
+- [x] 확정 버전 조합을 `backend/requirements.txt`에 고정
 
 **Phase 0 처리 기록 (2026-07-13)**
 - [x] `UPSTAGE_API_KEY` 환경변수 존재 확인 (`.env` 값은 출력하지 않음)
@@ -957,6 +959,16 @@ rag-qa-app/
 
 - parse_service / embedding_service 구현, 업로드 → 파싱 → 청크 → 색인 자동 연결
 - **완료 기준**: FR-1, FR-2의 DoD 전부 체크
+
+**Phase 2 처리 기록 (2026-07-13)**
+- [x] `backend/services/parse_service.py` 구현: PDF/DOCX/HTML 확장자 검증, Upstage Document Parse 연동, Markdown 추출
+- [x] `backend/services/embedding_service.py` 구현: Markdown 청크 분할, Solar Embedding 연동, FAISS in-memory 색인
+- [x] `backend/services/pipeline.py` 구현: 업로드 → 파싱 → 청크 → 임베딩 → 색인 자동 연결
+- [x] `backend/routers/documents.py` 구현: `POST/GET/DELETE /api/documents`
+- [x] 동일 파일명 중복 업로드는 UUID 기반 서로 다른 문서로 관리
+- [x] 문서 삭제 시 메타데이터와 FAISS 벡터를 함께 제거
+- [x] `PRD_01_기획_기능요구사항.md`의 FR-1, FR-2 사전 조사 및 DoD 체크 완료
+- [x] `python -m pytest backend/tests` 통과 (`7 passed`)
 
 ### Phase 3 — LangGraph RAG 그래프 (2.5h) — FR-3, FR-4, FR-5
 
