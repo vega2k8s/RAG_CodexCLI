@@ -849,6 +849,7 @@ module.exports = {
 | `MAX_RETRY_COUNT` | Groundness 실패 시 최대 재시도 횟수 (기본 2) | 백엔드 `.env` |
 
 > `.env`는 `.gitignore`에 반드시 포함하고, 키 없이 구조만 담은 `.env.example`을 레포에 동봉한다.
+> 로컬 FastAPI 앱은 `backend/main.py` 시작 시 프로젝트 루트 `.env`를 라우터 import 전에 로드한다. 기본 문서 파이프라인이 import 시점에 생성되므로 `UPSTAGE_API_KEY`가 먼저 주입되어야 한다.
 
 ---
 
@@ -996,6 +997,7 @@ rag-qa-app/
 ### Phase 6 — 문서 관리 화면 (1.0h) — FR-6
 
 - **완료 기준**: FR-6 DoD 전부 체크
+- [x] PDF 업로드 시 `missing_upstage_api_key`가 발생하지 않도록 FastAPI 시작 시 프로젝트 루트 `.env` 선로딩 처리
 
 ### Phase 7 — Q&A 채팅 화면 (1.5h) — FR-7
 

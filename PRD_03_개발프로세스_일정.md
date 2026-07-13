@@ -189,6 +189,14 @@
 
 - **완료 기준**: FR-6 DoD 전부 체크
 
+**Phase 6 처리 기록 (2026-07-13)**
+- [x] `frontend/src/pages/DocumentsPage.jsx` 구현: 네이티브 드래그앤드롭/파일 선택 업로드, PDF/DOCX/HTML 및 20MB 클라이언트 검증
+- [x] `GET /api/documents` 기반 문서 목록 표시, 처리 중 문서 자동 갱신, 상태 배지(처리 중/완료/실패) 표시
+- [x] `DELETE /api/documents/{document_id}` 연동 및 삭제 전 확인 모달 구현
+- [x] 업로드·삭제·오류 Toast 피드백 구현
+- [x] `PRD_01_기획_기능요구사항.md`의 FR-6 사전 조사 및 DoD 체크 완료
+- [x] PDF 업로드 시 `missing_upstage_api_key`가 발생하지 않도록 FastAPI 시작 시 프로젝트 루트 `.env` 선로딩 처리
+
 ### Phase 7 — Q&A 채팅 화면 (1.5h) — FR-7
 
 - **완료 기준**: FR-7 DoD 전부 체크 (스트리밍·출처·Groundness 라벨 표시)

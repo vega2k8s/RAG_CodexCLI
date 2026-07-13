@@ -1,7 +1,13 @@
 """FastAPI 애플리케이션 진입점."""
 
+from pathlib import Path
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+# 라우터 import 시 기본 파이프라인이 생성되므로, 그 전에 프로젝트 루트 .env를 로드합니다.
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 from backend.routers.chat import router as chat_router
 from backend.routers.documents import router as documents_router
