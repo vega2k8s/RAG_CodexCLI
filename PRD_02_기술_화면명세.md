@@ -39,8 +39,9 @@
 | 항목 | 내용 |
 |---|---|
 | Request | `{ "question": "string", "conversationId": "string (optional)" }` |
-| Response (스트리밍, 200, `text/event-stream`) | 토큰 단위 답변 스트림 + 최종 이벤트로 출처 정보 전달 |
-| 최종 이벤트 예시 | `{ "answer": "string", "sources": [{ "documentName": "string", "page": number }], "grounded": boolean }` |
+| Response (스트리밍, 200, `text/event-stream`) | SSE `status` → `token` 반복 → `final` 순서로 전송, 오류 시 `error` 이벤트 전송 |
+| Token 이벤트 예시 | `event: token`, `data: { "token": "string" }` |
+| 최종 이벤트 예시 | `event: final`, `data: { "answer": "string", "sources": [{ "documentName": "string", "page": number }], "grounded": boolean, "groundness": "grounded", "conversationId": "string" }` |
 | Response (근거 없음) | `grounded: false` + 안내 문구 반환 (답변을 지어내지 않음) |
 
 > API 명세는 1차 초안이며, FR-1~FR-5 구현 과정에서 세부 필드가 조정될 수 있습니다. 변경 시 본 문서를 갱신합니다.

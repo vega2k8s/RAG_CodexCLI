@@ -164,10 +164,26 @@
 - documents/chat 라우터 구현, SSE 스트리밍 연결
 - **완료 기준**: 4개 엔드포인트 `curl`/Postman 정상 응답, 4장 API 명세와 일치
 
+**Phase 4 처리 기록 (2026-07-13)**
+- [x] `backend/routers/chat.py` 구현: `POST /api/chat` 요청 모델, RAG 그래프 실행 의존성, SSE `status`/`token`/`final`/`error` 이벤트 응답
+- [x] `backend/main.py`에 documents/chat 라우터 등록 완료
+- [x] 채팅 API 테스트 추가: 토큰 스트리밍, 최종 출처/grounded 이벤트, 빈 질문 400 오류 검증
+- [x] 4개 핵심 엔드포인트 구현 확인: `POST /api/documents`, `GET /api/documents`, `DELETE /api/documents/{document_id}`, `POST /api/chat`
+- [x] `PRD_02_기술_화면명세.md`의 `POST /api/chat` SSE 이벤트 명세를 실제 구현과 일치하도록 갱신
+- [x] `python -m pytest backend/tests` 통과 (`12 passed`)
+
 ### Phase 5 — 프론트 환경 설정 (0.5h)
 
 - Vite + React + Tailwind + Router(3개 경로) + Axios 인스턴스 + Pretendard 폰트
 - **완료 기준**: `npm run dev` 기동, Tailwind 클래스 적용, 3개 경로 라우팅
+
+**Phase 5 처리 기록 (2026-07-13)**
+- [x] `frontend/package.json`에 Vite, React 18, React Router, Axios, TailwindCSS 의존성 및 `dev`/`build`/`preview` 스크립트 정의 완료
+- [x] `frontend/src/main.jsx`에 React 진입점과 `BrowserRouter` 연결 완료
+- [x] `frontend/src/App.jsx`에 `/`, `/documents`, `/chat` 3개 경로 라우팅 구성 완료
+- [x] `frontend/src/styles.css`, `frontend/tailwind.config.js`, `frontend/postcss.config.js`에 TailwindCSS 및 Pretendard 폰트 설정 완료
+- [x] `frontend/src/api/axios.js`에 `VITE_API_BASE_URL` 기반 Axios 인스턴스 구성 완료
+- [ ] `npm run dev` 실제 기동 검증은 `frontend/node_modules` 미설치 상태라 의존성 설치 후 확인 필요
 
 ### Phase 6 — 문서 관리 화면 (1.0h) — FR-6
 

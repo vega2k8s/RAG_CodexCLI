@@ -985,6 +985,14 @@ rag-qa-app/
 - Vite + React + Tailwind + Router(3개 경로) + Axios 인스턴스 + Pretendard 폰트
 - **완료 기준**: `npm run dev` 기동, Tailwind 클래스 적용, 3개 경로 라우팅
 
+**Phase 5 처리 기록 (2026-07-13)**
+- [x] `frontend/package.json`에 Vite, React 18, React Router, Axios, TailwindCSS 의존성 및 `dev`/`build`/`preview` 스크립트 정의 완료
+- [x] `frontend/src/main.jsx`에 React 진입점과 `BrowserRouter` 연결 완료
+- [x] `frontend/src/App.jsx`에 `/`, `/documents`, `/chat` 3개 경로 라우팅 구성 완료
+- [x] `frontend/src/styles.css`, `frontend/tailwind.config.js`, `frontend/postcss.config.js`에 TailwindCSS 및 Pretendard 폰트 설정 완료
+- [x] `frontend/src/api/axios.js`에 `VITE_API_BASE_URL` 기반 Axios 인스턴스 구성 완료
+- [ ] `npm run dev` 실제 기동 검증은 `frontend/node_modules` 미설치 상태라 의존성 설치 후 확인 필요
+
 ### Phase 6 — 문서 관리 화면 (1.0h) — FR-6
 
 - **완료 기준**: FR-6 DoD 전부 체크

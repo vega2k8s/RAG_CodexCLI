@@ -29,3 +29,5 @@ __pycache__/
 # Task files
 # tasks.json
 # tasks/ 
+
+./frontend/node_modules/
