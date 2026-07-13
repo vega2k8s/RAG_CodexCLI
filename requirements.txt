@@ -1,0 +1,8 @@
+fastapi==0.115.0
+uvicorn==0.30.6
+langgraph==1.1.6
+langchain-upstage==0.7.7
+langchain-core==1.2.26
+faiss-cpu==1.11.0
+requests==2.33.1
+python-dotenv==1.0.1

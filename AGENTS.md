@@ -15,7 +15,10 @@
 cd frontend && npm run dev
 
 # 백엔드 FastAPI 개발 서버 실행
-cd backend && uvicorn app.main:app --reload
+uvicorn backend.main:app --reload
+
+# Phase 0 Upstage API 및 의존성 사전 검증
+python scripts/phase0_upstage_check.py
 ```
 
 테스트, 린트, 포맷 명령은 동작 확인 후 문서에 추가합니다.
@@ -35,3 +38,9 @@ cd backend && uvicorn app.main:app --reload
 ## 보안 및 설정
 
 필요할 때만 `.env.example`을 참고해 로컬 `.env`를 만들고, 비밀값·API 키·업로드 문서·벡터 스토어 데이터는 커밋하지 않습니다. 파일 업로드와 외부 API 입력은 검증 로직을 거치도록 설계합니다. 로그에는 인증 정보나 문서 원문이 노출되지 않도록 마스킹을 적용합니다.
+
+## PRD 문서와 AGENTS.md 문서 항상 최신화 하기
+* @PRD_RAG_QA앱.md 문서가 원본 PRD 문서입니다. 이 문서가 너무 길어서 PRD_00_메인.md 부터 PRD_03_개발프로세스_일정.md 문서로 분리하였습니다.
+* 모든 변경사항이 발생하면 (예를 들어 기능이나 요구사항이 변경 되거나, 화면명세가 변경되거나, Source Code가 변경 되거나 라이브러리 버전이 변경되면) md 문서들도 반드시 업데이트 합니다. 
+* `@PRD_01_기획_기능요구사항.md\3. 기능 요구사항 (Functional Requirements) & DoD` FR-1 ~ FR-7 구현이 완료된 사항들은 모두 체크 표시를 하여 FR 구현이 완료 되었음을 반드시 표시하세요.
+* `@PRD_03_개발프로세스_일정.md\13. 개발 일정 및 완료 기준` 에서도 Phase 별로 구현이 완료되면 체크표시를 해서 완료 되었음을 반드시 표시하세요.

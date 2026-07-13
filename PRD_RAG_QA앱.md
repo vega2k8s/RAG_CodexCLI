@@ -929,12 +929,29 @@ rag-qa-app/
 
 **완료 기준**
 - [ ] 4개 Upstage API(Parse/Embedding/Solar/Groundness) 모두 테스트 호출 성공
-- [ ] 확정 버전 조합을 `requirements.txt`에 고정
+- [x] 확정 버전 조합을 `requirements.txt`에 고정
+
+**Phase 0 처리 기록 (2026-07-13)**
+- [x] `UPSTAGE_API_KEY` 환경변수 존재 확인 (`.env` 값은 출력하지 않음)
+- [x] Python 3.12.7 기준 핵심 패키지 임포트 가능 확인: FastAPI, LangGraph, langchain-upstage, FAISS, requests
+- [x] 벡터 스토어는 Phase 0 기준 FAISS in-memory로 확정
+- [x] 검증 스크립트 추가: `python scripts/phase0_upstage_check.py`
+- [x] Upstage Document Parse 실호출 성공: 샘플 PDF 표 텍스트 감지
+- [x] Solar Embedding 실호출 성공: `solar-embedding-1-large-query`, 4096차원
+- [x] Solar Pro3 스트리밍 실호출 성공: 토큰 이벤트 수신
+- [ ] Groundness Check 실호출 미완료: `/groundedness-check` 경로가 404를 반환해 최신 API 경로 확인 필요
 
 ### Phase 1 — 환경 설정 (0.5h)
 
 - GitHub 레포 생성, `.gitignore`(.env 포함), 디렉토리 구조 생성, 가상환경 + 패키지 설치
 - **완료 기준**: `uvicorn backend.main:app --reload` 기동, `/docs` Swagger 접근 가능
+
+**Phase 1 처리 기록 (2026-07-13)**
+- [x] `.gitignore`에 `.env`, Python 캐시, Node 의존성 제외 규칙 확인
+- [x] `requirements.txt` 기준 백엔드 의존성 고정 확인
+- [x] PRD 구조에 맞춰 `backend/`, `backend/routers/`, `backend/graph/`, `backend/services/`, `backend/tests/` 생성
+- [x] FastAPI 진입점 추가: `backend/main.py`
+- [x] `uvicorn backend.main:app --reload` 기동 및 `/docs` Swagger 접근 확인 (`DOCS_STATUS=200`)
 
 ### Phase 2 — 파싱·색인 파이프라인 (1.5h) — FR-1, FR-2
 
