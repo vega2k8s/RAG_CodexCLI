@@ -82,10 +82,11 @@
 > [Phase 4] 백엔드 API 조립          ── 1.0h
 > [Phase 5] 프론트 환경 설정         ── 0.5h
 > [Phase 6] 문서 관리 화면           ── 1.0h
+> [Phase 6.5] 메인 대시보드          ── 0.5h
 > [Phase 7] Q&A 채팅 화면           ── 1.5h
 > [Phase 8] 통합 E2E 검증           ── 1.0h
 >                                   ────────
->                                   총 10.0h
+>                                   총 10.5h
 > ```
 
 ### Phase 0 — 사전 기술 검증 (0.5h)
@@ -132,6 +133,17 @@
 ### Phase 6 — 문서 관리 화면 (1.0h) — FR-6
 
 - **완료 기준**: FR-6 DoD 전부 체크
+
+### Phase 6.5 — 메인 대시보드 (0.5h) — FR-8
+
+> **우선순위: Should Have.** 
+
+- `Dashboard.jsx` 구현 — `SummaryCard`, `RecentDocList`, `QuickActions` (PRD_02 5.2.1 · 5.3.1)
+- `GET /api/documents` 응답을 재사용해 프론트에서 건수 파생 계산 — **별도 집계 API를 만들지 않는다**
+  - 전체 = 배열 length · 색인완료 = `status === "indexed"` · 처리중 = `status === "processing"`
+- 문서 0건 / 1건 이상에 따라 Primary CTA를 업로드 ↔ 질문으로 전환
+- **선행 조건**: Phase 4(API `GET /api/documents` 동작) · Phase 5(라우팅 `/`) 완료
+- **완료 기준**: FR-8 DoD 전부 체크 (요약 3건수 · 최근 문서 목록 · 빈 상태 · CTA 전환 · 실패 문서 미집계)
 
 ### Phase 7 — Q&A 채팅 화면 (1.5h) — FR-7
 

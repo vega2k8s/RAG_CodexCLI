@@ -53,6 +53,8 @@ PDF·Word·HTML 문서를 업로드하면, AI가 문서 구조(표·레이아웃
 | M-05 | LangGraph Self-Correcting 그래프 (FR-5) | Must Have | [① FR-5](./PRD_01_기획_기능요구사항.md#3-기능-요구사항-functional-requirements--dod) |
 | M-06 | Q&A 채팅 화면 (FR-7) | Must Have | [① FR-7](./PRD_01_기획_기능요구사항.md#3-기능-요구사항-functional-requirements--dod) |
 | S-01 | 문서 관리 화면 — 목록·삭제 (FR-6) | Should Have | [① FR-6](./PRD_01_기획_기능요구사항.md#3-기능-요구사항-functional-requirements--dod) |
+| S-03 | 메인 대시보드 — 요약 카드·최근 문서 (FR-8) | Should Have | [① FR-8](./PRD_01_기획_기능요구사항.md#3-기능-요구사항-functional-requirements--dod) |
+
 
 > 전체 기능 목록·DoD 체크리스트는 → [① 기획 & 기능요구사항](./PRD_01_기획_기능요구사항.md)
 
@@ -82,10 +84,11 @@ PDF·Word·HTML 문서를 업로드하면, AI가 문서 구조(표·레이아웃
 [Phase 4] 백엔드 API 조립          ── 1.0h
 [Phase 5] 프론트 환경 설정         ── 0.5h
 [Phase 6] 문서 관리 화면           ── 1.0h
+[Phase 6.5] 메인 대시보드          ── 0.5h  (Should Have)
 [Phase 7] Q&A 채팅 화면           ── 1.5h
 [Phase 8] 통합 E2E 검증           ── 1.0h
                                   ────────
-                                  총 10.0h
+                                  총 10.5h
 ```
 
 > Phase별 상세 완료 기준·E2E 체크리스트·바이브 코딩 원칙·리스크는 → [③ 개발프로세스 & 일정](./PRD_03_개발프로세스_일정.md)
